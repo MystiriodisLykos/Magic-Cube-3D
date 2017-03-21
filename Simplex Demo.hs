@@ -4,19 +4,7 @@ import Graphics.Gloss
 import Sticker
 import Cubie
 import Puzzle
-
-rotateL :: Int -> [a] -> [a]
-rotateL _ [] = []
-rotateL n xs = zipWith const (drop n (cycle xs)) xs
-
-scaleP :: Float -> Float -> [Picture] -> [Picture]
-scaleP x y s = map (\p -> scale x y p) s
-
-translateP :: Float -> Float -> [Picture] -> [Picture]
-translateP x y s = map (\p -> translate x y p) s
-
-rotateP :: Float -> [Picture] -> [Picture]
-rotateP d s = map (\p -> rotate d p) s
+import Data.List
 
 window :: Display
 window = InWindow "Game" (500, 500) (100, 100)
@@ -42,7 +30,7 @@ ctest2 = display window background test2
 ctest3 :: IO()
 ctest3 = display window background test3
                                           
-drawT :: Puzzle -> [Picture]
+                                          drawT :: Puzzle -> [Picture]
 drawT p = let fa = getAdjFaces p 0
               bs = rotateL ((length fa)-1) $ makeRSticker $ length fa
               fs = filter (\(f, i) -> f `elem` fa) $ (zip (getFaces p) [0..])
@@ -69,7 +57,7 @@ cc0 = Cubie {position = [1,1,1,0], stickers = [rotS s0 pi, rotS s1 pi, rotS s2 p
 cc1 = Cubie {position = [1,1,0,1], stickers = [rotS s0 pi, rotS s1 pi, rotS s3 pi], nc = "cc1"}
 cc2 = Cubie {position = [1,0,1,1], stickers = [rotS s0 pi, rotS s2 pi, rotS s3 pi], nc = "cc2"}
 cc3 = Cubie {position = [0,1,1,1], stickers = [rotS s1 pi, rotS s2 pi, rotS s3 pi], nc = "cc3"}
-cc  = Cubie {position = [1,1,1,1], stickers = [s0, s1, s2, s3], nc = "cc"}
+cc  = Cubie {position = [1,1,1,1], stickers = [cloneS s0, cloneS s1, cloneS s2, cloneS s3], nc = "cc"}
 
 p1 :: Puzzle
 p1 = Puzzle {cubies = [cc0,cc1,cc2,cc3,cc], drawPuzzle = drawT}
